@@ -2,15 +2,18 @@
 
 pragma solidity 0.8.21;
 
+import {Errors} from "./interfaces/Errors.sol";
 import {IERC20} from "./interfaces/IERC20.sol";
 import {IStaking} from "./interfaces/IStaking.sol";
 
 import {PriceFeed} from "./libraries/PriceFeed.sol";
+import {SafeETH} from "./libraries/SafeETH.sol";
 
 import {Ownable} from "./utils/Ownable.sol";
 
-contract Airdrop is Ownable {
+contract Airdrop is Ownable, Errors {
     using PriceFeed for address;
+    using SafeETH for address;
 
     /* ========== STATE VARIABLES ========== */
 
@@ -18,27 +21,21 @@ contract Airdrop is Ownable {
     /// @notice Address of the BNB/USD price aggregator.
     address public priceFeed = 0xb39B176130aCFd652F228D45b634A5fB1bE3bb11;
 
-    /// @notice Minimum value of zars, in terms of USD, that can be bought - magnified by 1e18.
+    /// @notice Minimum value of zars token, in terms of USD, that can be bought - magnified by 1e18.
     uint128 public constant MIN_PURCHASE_USD = 1 * 1e18;
-    /// @notice Price at which users can buy zars - magnified by 1e18.
+    /// @notice Price at which users can buy zars token - magnified by 1e18.
     uint128 public constant PRICE_TOKEN = 0.01 * 1e18;
 
+    /// @notice The address of the zars token.
     IERC20 public zars;
+    /// @notice The address of the staking contract.
     IStaking public staking;
+    /// @notice The address of the sales funds holding wallet.
     address public saleWallet;
 
     /// @dev Initialization variables.
     address private immutable _INITIALIZER;
     bool private _isInitialized;
-
-    /* ========== ERRORS ========== */
-
-    error AirdropUnauthorizedInitializer();
-    error AirdropAlreadyInitialized();
-    error AirdropInvalidAddress();
-    error AirdropSameVariableReassignment(address newVariable, address oldVariable);
-    error AirdropInvalidValue();
-    error AirdropInsufficientValue(uint256 argumentValueUSD, uint256 minPurchaseUSD);
 
     /* ========== EVENTS ========== */
 
@@ -53,6 +50,9 @@ contract Airdrop is Ownable {
 
     /* ========== CONSTRUCTOR ========== */
 
+    /**
+     * @param saleWallet_ Address of the sales funds holding wallet.
+     */
     constructor(address saleWallet_) Ownable(_msgSender()) {
         saleWallet = saleWallet_;
         _INITIALIZER = _msgSender();
@@ -60,11 +60,17 @@ contract Airdrop is Ownable {
 
     /* ========== INITIALIZE ========== */
 
+    /**
+     * @notice Initializes external dependencies and state variables. This function can only be
+     * called once.
+     * @param zars_ Address of the zars token
+     * @param staking_ Address of the staking contract.
+     */
     function initialize(address zars_, address staking_) external {
-        if (_msgSender() != _INITIALIZER) revert AirdropUnauthorizedInitializer();
-        if (_isInitialized) revert AirdropAlreadyInitialized();
-        if (zars_ == address(0)) revert AirdropInvalidAddress();
-        if (staking_ == address(0)) revert AirdropInvalidAddress();
+        if (_msgSender() != _INITIALIZER) revert InvalidInitializer();
+        if (_isInitialized) revert AlreadyInitialized();
+        if (zars_ == address(0)) revert InvalidAddress();
+        if (staking_ == address(0)) revert InvalidAddress();
 
         zars = IERC20(zars_);
         staking = IStaking(staking_);
@@ -91,23 +97,31 @@ contract Airdrop is Ownable {
         token.approve(spender, value);
     }
 
+    /**
+     * @notice Updates the address of the price feed. Only the `owner` role can call this function.
+     * @param newPriceFeed The address of the new price feed.
+     */
     function updatePriceFeed(address newPriceFeed) external onlyOwner {
         if (newPriceFeed == priceFeed)
-            revert AirdropSameVariableReassignment(newPriceFeed, priceFeed);
+            revert SameVariableReassignment(priceFeed);
         emit UpdatePriceFeed({newPriceFeed: newPriceFeed, oldPriceFeed: priceFeed});
         priceFeed = newPriceFeed;
     }
 
+    /**
+     * @notice Receives ETH and gives an equivalent amount of zars token back with respect to a fixed price.
+     */
     function airdrop() external payable {
-        if (msg.value == 0) revert AirdropInvalidValue();
+        if (msg.value == 0) revert InvalidValue();
         uint256 price = priceFeed.getLatestPrice();
         uint256 valueUSD = (msg.value * price) / 1e8;
 
         if (valueUSD < MIN_PURCHASE_USD)
-            revert AirdropInsufficientValue(valueUSD, MIN_PURCHASE_USD);
+            revert InsufficientValue(valueUSD, MIN_PURCHASE_USD);
         uint256 valueToken = (valueUSD * 1e9) / PRICE_TOKEN;
         zars.transferFrom(saleWallet, address(this), valueToken);
         staking.stakeAirdrop(valueToken);
+        saleWallet.safeTransferETH(msg.value);
         emit AirdropToStake({
             user: _msgSender(),
             price: price,
