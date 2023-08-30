@@ -1,0 +1,28 @@
+Stakin contract
+
+token price $0.01
+
+Aridrop staking-:
+When user buy airdrop $1 then user get 100 Token. That token will stake for 6 months and get 0.5% reward every day. But after 5 months we will open buy back, then user can sell there token in $0.30.
+
+Presale Staking-:
+When user buy airdrop $25 then user get 2,500 Token. That token will stake for 6 months and get 3% reward every day. But after 5 months we will open buy back, then user can sell there token in $0.30.
+
+Token-:
+Token name: NA
+Token decimal: 9
+chain: BSC
+supply: 21M (fixed)
+
+Token Fees-:
+DAO: 2%
+Development: 1%
+Marketing: 1%
+Liquidity: 1%
+
+Token Distribution-:
+50% Airdrop and Presale
+10% Staking Rewards and other projects
+20% DAO
+10% Team share
+10% CEX Listing

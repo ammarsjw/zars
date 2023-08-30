@@ -1,2 +1,1 @@
-# zars
-A Platform
+# Zars
