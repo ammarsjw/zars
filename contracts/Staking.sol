@@ -5,14 +5,14 @@ pragma solidity 0.8.21;
 import {Errors} from "./interfaces/Errors.sol";
 import {IERC20} from "./interfaces/IERC20.sol";
 
-import {PriceFeed} from "./libraries/PriceFeed.sol";
-import {SafeETH} from "./libraries/SafeETH.sol";
+import {Address} from "./libraries/Address.sol";
+import {PriceFeed, AggregatorV3Interface} from "./libraries/PriceFeed.sol";
 
 import {AccessControl} from "./utils/AccessControl.sol";
 
 contract Staking is AccessControl, Errors {
-    using PriceFeed for address;
-    using SafeETH for address;
+    using PriceFeed for AggregatorV3Interface;
+    using Address for address payable;
 
     /* ========== STATE VARIABLES ========== */
 
@@ -28,7 +28,8 @@ contract Staking is AccessControl, Errors {
 
     // TODO change to 0xC5A35FC58EFDC4B88DDCA51AcACd2E8F593504bE
     /// @notice Address of the BNB/USD price aggregator.
-    address public priceFeed = 0xb39B176130aCFd652F228D45b634A5fB1bE3bb11;
+    AggregatorV3Interface public priceFeed =
+        AggregatorV3Interface(0xb39B176130aCFd652F228D45b634A5fB1bE3bb11);
 
     /// @dev Fixed time variables.
     uint128 private constant _ONE_DAY_TIME = 86400;
@@ -84,12 +85,13 @@ contract Staking is AccessControl, Errors {
     event Buyback(
         address user,
         uint256 index,
+        uint256 reward,
         uint256 price,
         uint256 value,
         uint256 valueUSD,
         uint256 valueToken
     );
-    event Unstake(address user, uint256 index);
+    event Unstake(address user, uint256 index, uint256 reward);
 
     /* ========== CONSTRUCTOR ========== */
 
@@ -104,8 +106,8 @@ contract Staking is AccessControl, Errors {
     /* ========== INITIALIZE ========== */
 
     /**
-     * @notice Initializes external dependencies and state variables. This function can only be
-     * called once.
+     * @notice Initializes external dependencies and certain state variables. This function can
+     * only be called once.
      * @param zars_ Address of the zars token
      * @param airdrop_ Address of the airdrop contract.
      * @param presale_ Address of the presale contract.
@@ -143,10 +145,10 @@ contract Staking is AccessControl, Errors {
      * @param newPriceFeed The address of the new price feed.
      */
     function updatePriceFeed(address newPriceFeed) external onlyRole(OWNER_ROLE) {
-        if (newPriceFeed == priceFeed)
-            revert SameVariableReassignment(priceFeed);
-        emit UpdatePriceFeed({newPriceFeed: newPriceFeed, oldPriceFeed: priceFeed});
-        priceFeed = newPriceFeed;
+        if (newPriceFeed == address(priceFeed))
+            revert SameVariableReassignment(address(priceFeed));
+        emit UpdatePriceFeed({newPriceFeed: newPriceFeed, oldPriceFeed: address(priceFeed)});
+        priceFeed = AggregatorV3Interface(newPriceFeed);
     }
 
     /**
@@ -306,25 +308,26 @@ contract Staking is AccessControl, Errors {
         if (staking.value == 0) revert NoSuchStake();
         if (block.timestamp <= staking.buybackTime)
             revert BuybackTimeNotReached(block.timestamp, staking.buybackTime);
-        uint256 price = priceFeed.getLatestPrice();
+        uint256 price = priceFeed.getLatestPriceETH();
         uint256 value = (staking.value * BUYBACK_PRICE_TOKEN) / (price * 1e1);
 
         if (msg.value != value) revert IncorrectBuybackValue(value);
         uint256 reward = getReward(_msgSender(), index);
-        uint256 stakingValue = staking.value;
         delete getStakings[_msgSender()][index];
+        payable(stakingRewardWallet).sendValue(msg.value);
 
         if (reward > 0) {
             zars.transferFrom(stakingRewardWallet, _msgSender(), reward);
         }
-        zars.transfer(_msgSender(), stakingValue);
+        zars.transfer(_msgSender(), staking.value);
         emit Buyback({
             user: _msgSender(),
             index: index,
+            reward: reward,
             price: price,
             value: msg.value,
             valueUSD: (msg.value * price) / 1e8,
-            valueToken: stakingValue
+            valueToken: staking.value
         });
     }
 
@@ -360,13 +363,12 @@ contract Staking is AccessControl, Errors {
         if (block.timestamp <= staking.endTime)
             revert EndTimeNotReached(block.timestamp, staking.endTime);
         uint256 reward = getReward(_msgSender(), index);
-        uint256 stakingValue = staking.value;
         delete getStakings[_msgSender()][index];
 
         if (reward > 0) {
             zars.transferFrom(stakingRewardWallet, _msgSender(), reward);
         }
-        zars.transfer(_msgSender(), stakingValue);
-        emit Unstake({user: _msgSender(), index: index});
+        zars.transfer(_msgSender(), staking.value);
+        emit Unstake({user: _msgSender(), index: index, reward: reward});
     }
 }

@@ -6,17 +6,18 @@ import {AggregatorV3Interface} from "../interfaces/AggregatorV3Interface.sol";
 
 library PriceFeed {
     /**
-     * @notice Fetches the price of BNB from the BSC price feed.
-     * @return price The price of BNB in 8 decimals.
+     * @notice Fetches the price of ETH from the given price feed.
+     * @param aggregator Address of any standard chainlink aggregator.
+     * @return price Price of ETH in 8 decimals.
      */
-    function getLatestPrice(address aggregator) public view returns (uint256 price) {
+    function getLatestPriceETH(AggregatorV3Interface aggregator) internal view returns (uint256 price) {
         (
             /*roundId uint80*/,
             int256 answer,
             /*startedAt uint256*/,
             /*updatedAt uint256*/,
             /*answeredInRound uint80*/
-        ) = AggregatorV3Interface(aggregator).latestRoundData();
+        ) = aggregator.latestRoundData();
         price = uint256(answer);
     }
 }

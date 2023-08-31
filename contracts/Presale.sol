@@ -6,20 +6,21 @@ import {Errors} from "./interfaces/Errors.sol";
 import {IERC20} from "./interfaces/IERC20.sol";
 import {IStaking} from "./interfaces/IStaking.sol";
 
-import {PriceFeed} from "./libraries/PriceFeed.sol";
-import {SafeETH} from "./libraries/SafeETH.sol";
+import {Address} from "./libraries/Address.sol";
+import {PriceFeed, AggregatorV3Interface} from "./libraries/PriceFeed.sol";
 
 import {Ownable} from "./utils/Ownable.sol";
 
 contract Presale is Ownable, Errors {
-    using PriceFeed for address;
-    using SafeETH for address;
+    using PriceFeed for AggregatorV3Interface;
+    using Address for address payable;
 
     /* ========== STATE VARIABLES ========== */
 
     // TODO change to 0xC5A35FC58EFDC4B88DDCA51AcACd2E8F593504bE
     /// @notice Address of the BNB/USD price aggregator.
-    address public priceFeed = 0xb39B176130aCFd652F228D45b634A5fB1bE3bb11;
+    AggregatorV3Interface public priceFeed =
+        AggregatorV3Interface(0xb39B176130aCFd652F228D45b634A5fB1bE3bb11);
 
     /// @notice Minimum value of zars token, in terms of USD, that can be bought - magnified by 1e18.
     uint128 public constant MIN_PURCHASE_USD = 25 * 1e18;
@@ -32,7 +33,7 @@ contract Presale is Ownable, Errors {
     IERC20 public zars;
     /// @notice The address of the staking contract.
     IStaking public staking;
-    /// @notice The address of the sales funds holding wallet.
+    /// @notice The address of the sale funds holding wallet.
     address public saleWallet;
 
     /// @dev Initialization variables.
@@ -53,7 +54,7 @@ contract Presale is Ownable, Errors {
     /* ========== CONSTRUCTOR ========== */
 
     /**
-     * @param saleWallet_ Address of the sales funds holding wallet.
+     * @param saleWallet_ Address of the sale funds holding wallet.
      */
     constructor(address saleWallet_) Ownable(_msgSender()) {
         saleWallet = saleWallet_;
@@ -63,8 +64,8 @@ contract Presale is Ownable, Errors {
     /* ========== INITIALIZE ========== */
 
     /**
-     * @notice Initializes external dependencies and state variables. This function can only be
-     * called once.
+     * @notice Initializes external dependencies and certain state variables. This function can
+     * only be called once.
      * @param zars_ Address of the zars token
      * @param staking_ Address of the staking contract.
      */
@@ -104,18 +105,18 @@ contract Presale is Ownable, Errors {
      * @param newPriceFeed The address of the new price feed.
      */
     function updatePriceFeed(address newPriceFeed) external onlyOwner {
-        if (newPriceFeed == priceFeed)
-            revert SameVariableReassignment(priceFeed);
-        emit UpdatePriceFeed({newPriceFeed: newPriceFeed, oldPriceFeed: priceFeed});
-        priceFeed = newPriceFeed;
+        if (newPriceFeed == address(priceFeed))
+            revert SameVariableReassignment(address(priceFeed));
+        emit UpdatePriceFeed({newPriceFeed: newPriceFeed, oldPriceFeed: address(priceFeed)});
+        priceFeed = AggregatorV3Interface(newPriceFeed);
     }
 
     /**
-     * @notice Receives ETH and gives an equivalent amount of zars token back with respect to a fixed price.
+     * @notice Receives BNB and gives an equivalent amount of zars token back with respect to a fixed price.
      */
     function presale() external payable {
         if (msg.value == 0) revert InvalidValue();
-        uint256 price = priceFeed.getLatestPrice();
+        uint256 price = priceFeed.getLatestPriceETH();
         uint256 valueUSD = (msg.value * price) / 1e8;
 
         if (valueUSD < MIN_PURCHASE_USD || valueUSD > MAX_PURCHASE_USD)
@@ -123,7 +124,7 @@ contract Presale is Ownable, Errors {
         uint256 valueToken = (valueUSD * 1e9) / PRICE_TOKEN;
         zars.transferFrom(saleWallet, address(this), valueToken);
         staking.stakePresale(valueToken);
-        saleWallet.safeTransferETH(msg.value);
+        payable(saleWallet).sendValue(msg.value);
         emit PresaleToStake({
             user: _msgSender(),
             price: price,

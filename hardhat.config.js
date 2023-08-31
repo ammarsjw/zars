@@ -18,7 +18,11 @@ module.exports = {
     networks: {
         goerli: {
             url: process.env.URL_GOERLI,
-            accounts: [process.env.PRIVATE_KEY_GOERLI],
+            accounts: [
+                process.env.PRIVATE_KEY_GOERLI,
+                process.env.SALE_WALLET_PRIVATE_KEY_GOERLI,
+                process.env.STAKING_REWARDS_WALLET_PRIVATE_KEY_GOERLI
+            ],
         },
         bsc: {
             url: process.env.URL_BSC,

@@ -28,10 +28,10 @@ contract Zars is ERC20, Ownable, Errors {
         address collector;
     }
 
-    /// @notice Returns whether an address is exlcuded from fees.
-    mapping(address => bool) public isExcludedFromFees;
     /// @notice Returns the fee details.
     Fee[4] public getFees;
+    /// @notice Returns whether an address is exlcuded from fees.
+    mapping(address => bool) public isExcludedFromFees;
     /// @notice Returns whether an address is a market maker pair.
     mapping(address => bool) public automatedMarketMakerPairs;
 
@@ -49,7 +49,7 @@ contract Zars is ERC20, Ownable, Errors {
      * @param symbol_ Symbol of the token.
      * @param decimals_ Decimals of the token.
      * @param feeCollectors_ Addresses of the fee collectors.
-     * @param saleWallet_ Address of the sales funds holding wallet.
+     * @param saleWallet_ Address of the sale funds holding wallet.
      * @param stakingRewardWallet_ Address of the staking funds holding wallet.
      */
     constructor(
@@ -62,11 +62,6 @@ contract Zars is ERC20, Ownable, Errors {
     ) ERC20(name_, symbol_) Ownable(_msgSender()) {
         _decimals = decimals_;
 
-        excludeFromFees(address(this), true);
-        excludeFromFees(owner(), true);
-        excludeFromFees(saleWallet_, true);
-        excludeFromFees(stakingRewardWallet_, true);
-
         uint256[] memory feePercentages = new uint256[](4);
         feePercentages[0] = 2; // DAO
         feePercentages[1] = 1; // Development
@@ -75,9 +70,12 @@ contract Zars is ERC20, Ownable, Errors {
 
         for (uint256 i = 0; i < getFees.length; i++) {
             getFees[i] = Fee(feePercentages[i], feeCollectors_[i]);
-
-            if (!isExcludedFromFees[feeCollectors_[i]]) excludeFromFees(feeCollectors_[i], true);
+            _excludeFromFees(feeCollectors_[i], true);
         }
+        _excludeFromFees(address(this), true);
+        _excludeFromFees(owner(), true);
+        _excludeFromFees(saleWallet_, true);
+        _excludeFromFees(stakingRewardWallet_, true);
 
         /// @dev Creating a pair for this token.
         address pair = IPancakeFactory(router.factory()).createPair(address(this), router.WETH());
@@ -120,6 +118,11 @@ contract Zars is ERC20, Ownable, Errors {
     function excludeFromFees(address user, bool isExcluded) public onlyOwner {
         if (isExcluded == isExcludedFromFees[user])
             revert SameStateReassignment(isExcludedFromFees[user]);
+        _excludeFromFees(user, isExcluded);
+    }
+
+    function _excludeFromFees(address user, bool isExcluded) internal {
+        if (isExcluded == isExcludedFromFees[user]) return;
         isExcludedFromFees[user] = isExcluded;
         emit ExcludeFromFees({user: user, isExcluded: isExcluded});
     }
@@ -144,7 +147,7 @@ contract Zars is ERC20, Ownable, Errors {
      * @param isPair The state denoting whether it is a market maker pair or not.
      */
     function setAutomatedMarketMakerPair(address pair, bool isPair) public onlyOwner {
-        if (isPair != automatedMarketMakerPairs[pair])
+        if (isPair == automatedMarketMakerPairs[pair])
             revert SameStateReassignment(automatedMarketMakerPairs[pair]);
         automatedMarketMakerPairs[pair] = isPair;
         emit SetAutomatedMarketMakerPair({pair: pair, isPair: isPair});
