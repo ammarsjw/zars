@@ -7,10 +7,10 @@ interface Errors {
     /* ========== COMMON ========== */
 
     /**
-     * @dev Indicates an error when reassigning a variable.
-     * @param variable Value of the variable to be replaced.
+     * @dev Indicates if an address to be reassigned is the same as the new address given.
+     * @param currentAddress Address to be reassigned.
      */
-    error SameVariableReassignment(address variable);
+    error IdenticalAddressReassignment(address currentAddress);
     /**
      * @dev Indicates a failure with the `initializer`.
      */

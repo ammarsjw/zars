@@ -147,7 +147,7 @@ contract Staking is AccessControl, Errors {
      */
     function updatePriceFeed(address newPriceFeed) external onlyRole(OWNER_ROLE) {
         if (newPriceFeed == address(priceFeed))
-            revert SameVariableReassignment(address(priceFeed));
+            revert IdenticalAddressReassignment(address(priceFeed));
         emit UpdatePriceFeed({newPriceFeed: newPriceFeed, oldPriceFeed: address(priceFeed)});
         priceFeed = AggregatorV3Interface(newPriceFeed);
     }

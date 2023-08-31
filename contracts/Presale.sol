@@ -107,7 +107,7 @@ contract Presale is Ownable, Errors {
      */
     function updatePriceFeed(address newPriceFeed) external onlyOwner {
         if (newPriceFeed == address(priceFeed))
-            revert SameVariableReassignment(address(priceFeed));
+            revert IdenticalAddressReassignment(address(priceFeed));
         emit UpdatePriceFeed({newPriceFeed: newPriceFeed, oldPriceFeed: address(priceFeed)});
         priceFeed = AggregatorV3Interface(newPriceFeed);
     }

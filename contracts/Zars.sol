@@ -105,7 +105,7 @@ contract Zars is ERC20, Ownable, Errors {
      */
     function updateRouter(address newRouter) external onlyOwner {
         if (newRouter == address(router))
-            revert SameVariableReassignment(address(router));
+            revert IdenticalAddressReassignment(address(router));
         emit UpdateRouter({newRouter: newRouter, oldRouter: address(router)});
         router = IPancakeRouter02(newRouter);
     }
