@@ -45,6 +45,7 @@ contract Zars is ERC20, Ownable, Errors {
     /* ========== CONSTRUCTOR ========== */
 
     /**
+     * @dev Constructor.
      * @param name_ Name of the token.
      * @param symbol_ Symbol of the token.
      * @param decimals_ Decimals of the token.

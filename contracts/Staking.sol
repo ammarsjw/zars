@@ -96,6 +96,7 @@ contract Staking is AccessControl, Errors {
     /* ========== CONSTRUCTOR ========== */
 
     /**
+     * @dev Constructor.
      * @param stakingRewardWallet_ Address of the staking funds holding wallet.
      */
     constructor(address stakingRewardWallet_) {

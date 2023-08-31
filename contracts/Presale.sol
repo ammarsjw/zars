@@ -54,6 +54,7 @@ contract Presale is Ownable, Errors {
     /* ========== CONSTRUCTOR ========== */
 
     /**
+     * @dev Constructor.
      * @param saleWallet_ Address of the sale funds holding wallet.
      */
     constructor(address saleWallet_) Ownable(_msgSender()) {
