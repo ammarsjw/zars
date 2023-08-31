@@ -155,6 +155,9 @@ contract Zars is ERC20, Ownable, Errors {
 
     /**
      * @dev Overriding the default `_update` internal function to include our business logic.
+     * @param from Address of the sender.
+     * @param to Address of the recipient.
+     * @param value Amount of tokens to be sent.
      */
     function _update(address from, address to, uint256 value) internal override {
         if (value == 0) {
@@ -175,15 +178,19 @@ contract Zars is ERC20, Ownable, Errors {
     }
 
     /**
-     * @dev Returns whether this transfer is from a pair, which is a buy swap.
+     * @dev Used in the overridden `_update` function. If `from` is a pair then this transfer
+     * is a buy swap.
+     * @param from Address of the sender.
      */
     function _isBuy(address from) internal view returns (bool) {
         return automatedMarketMakerPairs[from];
     }
 
     /**
-     * @dev Returns whether this transfer is from a non-router address to a pair, which is a sell
-     * swap.
+     * @dev Used in the overridden `_update` function. If `from` is an address other than the
+     * `router` and `to` is a pair then this transfer is a sell swap.
+     * @param from Address of the sender.
+     * @param to Address of the recipient.
      */
     function _isSell(address from, address to) internal view returns (bool) {
         return from != address(router) && automatedMarketMakerPairs[to];

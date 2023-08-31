@@ -6,7 +6,7 @@ import {AggregatorV3Interface} from "../interfaces/AggregatorV3Interface.sol";
 
 library PriceFeed {
     /**
-     * @notice Fetches the price of ETH from the given price feed.
+     * @dev Fetches the price of ETH from the given price feed.
      * @param aggregator Address of any standard chainlink aggregator.
      * @return price Price of ETH in 8 decimals.
      */
