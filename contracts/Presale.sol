@@ -102,7 +102,7 @@ contract Presale is Ownable, Errors {
     }
 
     /**
-     * @notice Updates the address of the price feed. Only the `owner` role can call this function.
+     * @notice Updates the address of the price feed. Only the `owner` can call this function.
      * @param newPriceFeed The address of the new price feed.
      */
     function updatePriceFeed(address newPriceFeed) external onlyOwner {
