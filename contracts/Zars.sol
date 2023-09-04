@@ -64,10 +64,10 @@ contract Zars is ERC20, Ownable, Errors {
         _decimals = decimals_;
 
         uint256[] memory feePercentages = new uint256[](4);
-        feePercentages[0] = 2; // DAO
-        feePercentages[1] = 1; // Development
-        feePercentages[2] = 1; // Marketing
-        feePercentages[3] = 1; // Liquidity
+        feePercentages[0] = 2;  // DAO
+        feePercentages[1] = 1;  // Development
+        feePercentages[2] = 1;  // Marketing
+        feePercentages[3] = 1;  // Liquidity
 
         for (uint256 i = 0; i < getFees.length; i++) {
             getFees[i] = Fee(feePercentages[i], feeCollectors_[i]);
@@ -93,7 +93,7 @@ contract Zars is ERC20, Ownable, Errors {
     /* ========== FUNCTIONS ========== */
 
     /**
-     * @dev See {ERC20-decimals}.
+     * @dev See {ERC20-decimals}. Overridden to allow a custom decimal amount.
      */
     function decimals() public view override returns (uint8) {
         return _decimals;
@@ -129,9 +129,8 @@ contract Zars is ERC20, Ownable, Errors {
     }
 
     /**
-     * @notice Excludes the given addresses from fees. All address are
-     * included in fee collection be default. Only the `owner` can call
-     * this function.
+     * @notice Excludes the given addresses from fees. All address are included in fee
+     * collection be default. Only the `owner` can call this function.
      * @param users The addresses that need to be interacted with.
      * @param isExcluded The state denoting either being excluded from or included back to fees.
      */

@@ -67,7 +67,7 @@ contract Presale is Ownable, Errors {
     /**
      * @notice Initializes external dependencies and certain state variables. This function can
      * only be called once.
-     * @param zars_ Address of the zars token
+     * @param zars_ Address of the zars token.
      * @param staking_ Address of the staking contract.
      */
     function initialize(address zars_, address staking_) external {

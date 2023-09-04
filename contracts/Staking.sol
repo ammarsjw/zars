@@ -109,7 +109,7 @@ contract Staking is AccessControl, Errors {
     /**
      * @notice Initializes external dependencies and certain state variables. This function can
      * only be called once.
-     * @param zars_ Address of the zars token
+     * @param zars_ Address of the zars token.
      * @param airdrop_ Address of the airdrop contract.
      * @param presale_ Address of the presale contract.
      */
@@ -120,7 +120,7 @@ contract Staking is AccessControl, Errors {
         if (airdrop_ == address(0)) revert InvalidAddress();
         if (presale_ == address(0)) revert InvalidAddress();
 
-        /// @dev Assigning admin role to all non-admin roles.
+        /// @dev Assigning admin role as admin for all non-admin roles.
         _setRoleAdmin(ADMIN_ROLE, ADMIN_ROLE);
         _setRoleAdmin(OWNER_ROLE, ADMIN_ROLE);
         _setRoleAdmin(PRIMARY_STAKING_ROLE, ADMIN_ROLE);
@@ -204,7 +204,7 @@ contract Staking is AccessControl, Errors {
     }
 
     /**
-     * @notice Stake via airdrop
+     * @notice Stake via airdrop.
      * @param value Amount of tokens to stake.
      */
     function stakeAirdrop(uint256 value) external onlyRole(PRIMARY_STAKING_ROLE) {
@@ -212,7 +212,7 @@ contract Staking is AccessControl, Errors {
     }
 
     /**
-     * @notice Stake via presale
+     * @notice Stake via presale.
      * @param value Amount of tokens to stake.
      */
     function stakePresale(uint256 value) external onlyRole(SECONDARY_STAKING_ROLE) {
