@@ -2,13 +2,13 @@
 
 pragma solidity 0.8.21;
 
-import {Errors} from "./interfaces/Errors.sol";
-import {IERC20} from "./interfaces/IERC20.sol";
+import { Errors } from "./interfaces/Errors.sol";
+import { IERC20 } from "./interfaces/IERC20.sol";
 
-import {Address} from "./libraries/Address.sol";
-import {PriceFeed, AggregatorV3Interface} from "./libraries/PriceFeed.sol";
+import { Address } from "./libraries/Address.sol";
+import { PriceFeed, AggregatorV3Interface } from "./libraries/PriceFeed.sol";
 
-import {AccessControl} from "./utils/AccessControl.sol";
+import { AccessControl } from "./utils/AccessControl.sol";
 
 contract Staking is AccessControl, Errors {
     using PriceFeed for AggregatorV3Interface;

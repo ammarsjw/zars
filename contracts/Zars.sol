@@ -2,12 +2,12 @@
 
 pragma solidity 0.8.21;
 
-import {Errors} from "./interfaces/Errors.sol";
-import {IPancakeFactory} from "./interfaces/IPancakeFactory.sol";
-import {IPancakeRouter02} from "./interfaces/IPancakeRouter02.sol";
+import { Errors } from "./interfaces/Errors.sol";
+import { IPancakeFactory } from "./interfaces/IPancakeFactory.sol";
+import { IPancakeRouter02 } from "./interfaces/IPancakeRouter02.sol";
 
-import {ERC20} from "./utils/ERC20.sol";
-import {Ownable} from "./utils/Ownable.sol";
+import { ERC20 } from "./utils/ERC20.sol";
+import { Ownable } from "./utils/Ownable.sol";
 
 contract Zars is ERC20, Ownable, Errors {
 
