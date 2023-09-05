@@ -9,6 +9,10 @@ import { IPancakeRouter02 } from "./interfaces/IPancakeRouter02.sol";
 import { ERC20 } from "./utils/ERC20.sol";
 import { Ownable } from "./utils/Ownable.sol";
 
+/**
+ * @title Zars.
+ * @notice Primary token contract.
+ */
 contract Zars is ERC20, Ownable, Errors {
 
     /* ========== STATE VARIABLES ========== */

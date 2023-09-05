@@ -10,6 +10,10 @@ import { PriceFeed, AggregatorV3Interface } from "./libraries/PriceFeed.sol";
 
 import { AccessControl } from "./utils/AccessControl.sol";
 
+/**
+ * @title Staking.
+ * @notice Stakes the primary token when purchased via airdrop or presale.
+ */
 contract Staking is AccessControl, Errors {
     using PriceFeed for AggregatorV3Interface;
     using Address for address payable;

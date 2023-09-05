@@ -11,6 +11,10 @@ import { PriceFeed, AggregatorV3Interface } from "./libraries/PriceFeed.sol";
 
 import { Ownable } from "./utils/Ownable.sol";
 
+/**
+ * @title Airdrop.
+ * @notice Airdrop of the primary token.
+ */
 contract Airdrop is Ownable, Errors {
     using PriceFeed for AggregatorV3Interface;
     using Address for address payable;

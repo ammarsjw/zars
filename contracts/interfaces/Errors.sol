@@ -2,6 +2,10 @@
 
 pragma solidity ^0.8.20;
 
+/**
+ * @title Errors.
+ * @notice Error container for all contracts.
+ */
 interface Errors {
 
     /* ========== COMMON ========== */

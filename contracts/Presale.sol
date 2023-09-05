@@ -11,6 +11,10 @@ import { PriceFeed, AggregatorV3Interface } from "./libraries/PriceFeed.sol";
 
 import { Ownable } from "./utils/Ownable.sol";
 
+/**
+ * @title Presale.
+ * @notice Presale of the primary token.
+ */
 contract Presale is Ownable, Errors {
     using PriceFeed for AggregatorV3Interface;
     using Address for address payable;
