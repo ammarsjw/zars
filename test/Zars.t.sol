@@ -20,10 +20,9 @@ contract CounterTest is Test {
     ];
 
     function setUp() public {
-        zars = new Zars("Zars","ZRS",9, feeCollectors, saleWallet, stakingRewardWallet);
+        zars = new Zars("Zars", "ZRS", 9, feeCollectors, saleWallet, stakingRewardWallet);
     }
 
-    function test_basic() external view {
-        console.log("decimals", zars.decimals());
-    }
+    // function test_nothing() external {
+    // }
 }
