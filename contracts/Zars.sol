@@ -11,6 +11,7 @@ import { Ownable } from "./utils/Ownable.sol";
 
 /**
  * @title Zars.
+ * @author Zars team.
  * @notice Primary token contract.
  */
 contract Zars is ERC20, Ownable, Errors {

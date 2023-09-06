@@ -6,6 +6,7 @@ import { AggregatorV3Interface } from "../interfaces/AggregatorV3Interface.sol";
 
 /**
  * @title PriceFeed.
+ * @author Zars team.
  * @notice Parses data from the aggregator to be used in the contracts.
  */
 library PriceFeed {

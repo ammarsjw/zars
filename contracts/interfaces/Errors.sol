@@ -4,6 +4,7 @@ pragma solidity ^0.8.20;
 
 /**
  * @title Errors.
+ * @author Zars team.
  * @notice Error container for all contracts.
  */
 interface Errors {

@@ -12,6 +12,7 @@ import { AccessControl } from "./utils/AccessControl.sol";
 
 /**
  * @title Staking.
+ * @author Zars team.
  * @notice Stakes the primary token when purchased via airdrop or presale.
  */
 contract Staking is AccessControl, Errors {

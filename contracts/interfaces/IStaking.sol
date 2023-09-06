@@ -4,6 +4,7 @@ pragma solidity ^0.8.20;
 
 /**
  * @title IStaking.
+ * @author Zars team.
  * @notice Interface for the staking contract.
  */
 interface IStaking {

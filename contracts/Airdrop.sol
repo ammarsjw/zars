@@ -13,6 +13,7 @@ import { Ownable } from "./utils/Ownable.sol";
 
 /**
  * @title Airdrop.
+ * @author Zars team.
  * @notice Airdrop of the primary token.
  */
 contract Airdrop is Ownable, Errors {

@@ -13,6 +13,7 @@ import { Ownable } from "./utils/Ownable.sol";
 
 /**
  * @title Presale.
+ * @author Zars team.
  * @notice Presale of the primary token.
  */
 contract Presale is Ownable, Errors {
