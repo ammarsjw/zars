@@ -140,9 +140,8 @@ contract Zars is ERC20, Ownable, Errors {
      * @param isExcluded The state denoting either being excluded from or included back to fees.
      */
     function excludeMultipleFromFees(address[] calldata users, bool isExcluded) external onlyOwner {
-        for (uint256 i = 0; i < users.length; i++) {
+        for (uint256 i = 0; i < users.length; i++)
             isExcludedFromFees[users[i]] = isExcluded;
-        }
         emit ExcludeMultipleFromFees({users: users, isExcluded: isExcluded});
     }
 
