@@ -1,4 +1,5 @@
 Contracts:
+Chain: goerli
 Zars deployed to: 0x2bB0b32eFaB2858AbF2744D94c20D9F07A4f0478
 at block number: 9611580
 (Graph) Airdrop deployed to: 0x0Ae3BD671cA5A5CC026Cf2deb84Ff19ED459773f
@@ -9,6 +10,7 @@ at block number: 9612299
 at block number: 9612300
 
 Contracts:
+Chain: goerli
 Zars - https://goerli.etherscan.io/address/0x2bB0b32eFaB2858AbF2744D94c20D9F07A4f0478#code
 Airdrop - https://goerli.etherscan.io/address/0x0Ae3BD671cA5A5CC026Cf2deb84Ff19ED459773f#code
 Presale - https://goerli.etherscan.io/address/0xbb32CFBCBFd54449Cc5a7Fe7514A9CE15541c0b4#code
