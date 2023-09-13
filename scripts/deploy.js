@@ -128,7 +128,7 @@ async function verify(address, constructorArguments) {
 
 
 main().catch((error) => {
-    console.error(error)
-    process.exitCode = 1
-    process.exit()
+    console.error(error);
+    process.exitCode = 1;
+    process.exit();
 });
