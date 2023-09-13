@@ -4,11 +4,10 @@ const hre = require("hardhat");
 async function main() {
     // Chain dependent variables
     const networkName = hre.network.name;
-    let desiredGasPrice;
+    let desiredGasPrice, saleWalletAddress, stakingRewardWalletAddress;
     let feeCollectorAddresses = [];
-    let saleWalletAddress;
-    let stakingRewardWalletAddress;
     if (networkName == "goerli") {
+        desiredGasPrice = 1;
         feeCollectorAddresses = [
             "0x0000000000000000000000000000000000000001",
             "0x0000000000000000000000000000000000000002",
@@ -17,8 +16,8 @@ async function main() {
         ];
         saleWalletAddress = "0x49A61ba8E25FBd58cE9B30E1276c4Eb41dD80a80";
         stakingRewardWalletAddress = "0x3edCe801a3f1851675e68589844B1b412EAc6B07";
-        desiredGasPrice = 1;
     } else if (networkName == "bsc") {
+        desiredGasPrice = 3;
         feeCollectorAddresses = [
             "",
             "",
@@ -27,7 +26,6 @@ async function main() {
         ];
         saleWalletAddress = "";
         stakingRewardWalletAddress = "";
-        desiredGasPrice = 3;
     }
 
 
@@ -37,9 +35,7 @@ async function main() {
 
 
     // Static constructor arguments
-    const name = "Zars";
-    const symbol = "ZRS";
-    const decimals = "9";
+    const name = "Zars", symbol = "ZRS", decimals = "9";
 
 
     // Contracts
