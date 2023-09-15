@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.20;
 
-import { Errors } from "./interfaces/Errors.sol";
+import { StakingErrors } from "./interfaces/Errors.sol";
 import { IERC20 } from "./interfaces/IERC20.sol";
 
 import { Address } from "./libraries/Address.sol";
@@ -15,7 +15,7 @@ import { AccessControl } from "./utils/AccessControl.sol";
  * @author Zars team.
  * @notice Stakes the primary token when purchased via airdrop or presale.
  */
-contract Staking is AccessControl, Errors {
+contract Staking is StakingErrors, AccessControl {
     using PriceFeed for AggregatorV3Interface;
     using Address for address payable;
 

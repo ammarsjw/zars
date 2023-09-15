@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.20;
 
-import { Errors } from "./interfaces/Errors.sol";
+import { ZarsErrors } from "./interfaces/Errors.sol";
 import { IPancakeFactory } from "./interfaces/IPancakeFactory.sol";
 import { IPancakeRouter02 } from "./interfaces/IPancakeRouter02.sol";
 
@@ -14,7 +14,7 @@ import { Ownable } from "./utils/Ownable.sol";
  * @author Zars team.
  * @notice Primary token contract.
  */
-contract Zars is ERC20, Ownable, Errors {
+contract Zars is ZarsErrors, ERC20, Ownable {
 
     /* ========== STATE VARIABLES ========== */
 

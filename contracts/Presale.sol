@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.20;
 
-import { Errors } from "./interfaces/Errors.sol";
+import { PresaleErrors } from "./interfaces/Errors.sol";
 import { IERC20 } from "./interfaces/IERC20.sol";
 import { IStaking } from "./interfaces/IStaking.sol";
 
@@ -16,7 +16,7 @@ import { Ownable } from "./utils/Ownable.sol";
  * @author Zars team.
  * @notice Presale of the primary token.
  */
-contract Presale is Ownable, Errors {
+contract Presale is PresaleErrors, Ownable {
     using PriceFeed for AggregatorV3Interface;
     using Address for address payable;
 

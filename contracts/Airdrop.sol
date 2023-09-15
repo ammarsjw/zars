@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.20;
 
-import { Errors } from "./interfaces/Errors.sol";
+import { AirdropErrors } from "./interfaces/Errors.sol";
 import { IERC20 } from "./interfaces/IERC20.sol";
 import { IStaking } from "./interfaces/IStaking.sol";
 
@@ -16,7 +16,7 @@ import { Ownable } from "./utils/Ownable.sol";
  * @author Zars team.
  * @notice Airdrop of the primary token.
  */
-contract Airdrop is Ownable, Errors {
+contract Airdrop is AirdropErrors, Ownable {
     using PriceFeed for AggregatorV3Interface;
     using Address for address payable;
 
