@@ -98,7 +98,9 @@ contract Zars is ZarsErrors, ERC20, Ownable {
     /* ========== FUNCTIONS ========== */
 
     /**
-     * @dev See {ERC20-decimals}. Overridden to allow a custom decimal amount.
+     * @inheritdoc ERC20
+     * @dev See {ERC20-decimals}.
+     * @dev Allows a custom decimal amount.
      */
     function decimals() public view override returns (uint8) {
         return _decimals;
@@ -159,10 +161,9 @@ contract Zars is ZarsErrors, ERC20, Ownable {
     }
 
     /**
-     * @dev Overriding the default `_update` internal function to include our business logic.
-     * @param from Address of the sender.
-     * @param to Address of the recipient.
-     * @param value Amount of tokens to be sent.
+     * @inheritdoc ERC20
+     * @dev See {ERC20-_update}.
+     * @dev Includes custom fee logic.
      */
     function _update(address from, address to, uint256 value) internal override {
         if (value == 0) {
