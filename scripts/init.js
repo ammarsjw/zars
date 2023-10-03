@@ -1,6 +1,5 @@
 const hre = require("hardhat")
 
-
 async function main() {
     // Chain dependent variables
     const networkName = hre.network.name
@@ -57,7 +56,6 @@ async function main() {
     process.exit()
 }
 
-
 async function checkGasPrice(desiredGasPrice) {
     let feeData = await hre.ethers.provider.getFeeData()
     let gasPrice = hre.ethers.formatUnits(feeData.gasPrice, "gwei")
@@ -70,7 +68,6 @@ async function checkGasPrice(desiredGasPrice) {
         }
     }
 }
-
 
 main().catch((error) => {
     console.error(error)
