@@ -10,7 +10,7 @@ import { ERC20 } from "./utils/ERC20.sol";
 import { Ownable } from "./utils/Ownable.sol";
 
 /**
- * @title Zars.
+ * @title Zars token.
  * @author Zars team.
  * @notice Primary token contract.
  */
