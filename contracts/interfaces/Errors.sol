@@ -3,12 +3,9 @@
 pragma solidity ^0.8.20;
 
 /**
- * @dev Standard errors for the Airdrop contract.
+ * @dev Common errors for the protocol.
  */
-interface AirdropErrors {
-
-    /* ========== COMMON ========== */
-
+interface Errors {
     /**
      * @dev Indicates if an address to be reassigned is the same as the new address given.
      * @param currentAddress Address to be reassigned.
@@ -30,9 +27,12 @@ interface AirdropErrors {
      * @dev Indicates that a given integer value is not valid. For example, `0`.
      */
     error InvalidValue();
+}
 
-    /* ========== AIRDROP ========== */
-
+/**
+ * @dev Standard errors for the Airdrop contract.
+ */
+interface AirdropErrors is Errors {
     /**
      * @dev Indicates an error related to the `argument` being less than the `minimum` value.
      * @param argument Given value.
@@ -44,34 +44,7 @@ interface AirdropErrors {
 /**
  * @dev Standard errors for the Presale contract.
  */
-interface PresaleErrors {
-
-    /* ========== COMMON ========== */
-
-    /**
-     * @dev Indicates if an address to be reassigned is the same as the new address given.
-     * @param currentAddress Address to be reassigned.
-     */
-    error IdenticalAddressReassignment(address currentAddress);
-    /**
-     * @dev Indicates a failure with the `initializer`.
-     */
-    error InvalidInitializer();
-    /**
-     * @dev Indicates an error when `initialize` is being called more than once.
-     */
-    error AlreadyInitialized();
-    /**
-     * @dev Indicates that a given address is not valid. For example, `address(0)`.
-     */
-    error InvalidAddress();
-    /**
-     * @dev Indicates that a given integer value is not valid. For example, `0`.
-     */
-    error InvalidValue();
-
-    /* ========== PRESALE ========== */
-
+interface PresaleErrors is Errors {
     /**
      * @dev Indicates an error related to the `argument` being less than the `minimum` value or greater
      * than the `maximum` value.
@@ -89,34 +62,7 @@ interface PresaleErrors {
 /**
  * @dev Standard errors for the Staking contract.
  */
-interface StakingErrors {
-
-    /* ========== COMMON ========== */
-
-    /**
-     * @dev Indicates if an address to be reassigned is the same as the new address given.
-     * @param currentAddress Address to be reassigned.
-     */
-    error IdenticalAddressReassignment(address currentAddress);
-    /**
-     * @dev Indicates a failure with the `initializer`.
-     */
-    error InvalidInitializer();
-    /**
-     * @dev Indicates an error when `initialize` is being called more than once.
-     */
-    error AlreadyInitialized();
-    /**
-     * @dev Indicates that a given address is not valid. For example, `address(0)`.
-     */
-    error InvalidAddress();
-    /**
-     * @dev Indicates that a given integer value is not valid. For example, `0`.
-     */
-    error InvalidValue();
-
-    /* ========== STAKING ========== */
-
+interface StakingErrors is Errors {
     /**
      * @dev Indicates an error related to the length of `indexes` being greater than the length of
      * all `stakes` for a user.
@@ -162,34 +108,7 @@ interface StakingErrors {
 /**
  * @dev Standard errors for the Zars contract.
  */
-interface ZarsErrors {
-
-    /* ========== COMMON ========== */
-
-    /**
-     * @dev Indicates if an address to be reassigned is the same as the new address given.
-     * @param currentAddress Address to be reassigned.
-     */
-    error IdenticalAddressReassignment(address currentAddress);
-    /**
-     * @dev Indicates a failure with the `initializer`.
-     */
-    error InvalidInitializer();
-    /**
-     * @dev Indicates an error when `initialize` is being called more than once.
-     */
-    error AlreadyInitialized();
-    /**
-     * @dev Indicates that a given address is not valid. For example, `address(0)`.
-     */
-    error InvalidAddress();
-    /**
-     * @dev Indicates that a given integer value is not valid. For example, `0`.
-     */
-    error InvalidValue();
-
-    /* ========== ZARS ========== */
-
+interface ZarsErrors is Errors {
     /**
      * @dev Indicates an error when reassigning a boolean state variable.
      * @param state State of the boolean variable to be replaced.
