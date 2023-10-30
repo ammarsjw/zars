@@ -30,7 +30,7 @@ interface Errors {
 }
 
 /**
- * @dev Standard errors for the Airdrop contract.
+ * @dev Errors for the {Airdrop} contract.
  */
 interface AirdropErrors is Errors {
     /**
@@ -42,7 +42,7 @@ interface AirdropErrors is Errors {
 }
 
 /**
- * @dev Standard errors for the Presale contract.
+ * @dev Errors for the {Presale} contract.
  */
 interface PresaleErrors is Errors {
     /**
@@ -60,7 +60,7 @@ interface PresaleErrors is Errors {
 }
 
 /**
- * @dev Standard errors for the Staking contract.
+ * @dev Errors for the {Staking} contract.
  */
 interface StakingErrors is Errors {
     /**
@@ -106,7 +106,7 @@ interface StakingErrors is Errors {
 }
 
 /**
- * @dev Standard errors for the Zars contract.
+ * @dev Errors for the {Zars} contract.
  */
 interface ZarsErrors is Errors {
     /**
