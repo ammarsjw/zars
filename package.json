@@ -6,7 +6,7 @@
         "type": "git",
         "url": "git+https://github.com/ammarsjw/zars"
     },
-    "author": "Zars <@>",
+    "author": "Zars <dev@zars.org>",
     "license": "MIT",
     "devDependencies": {
         "@nomicfoundation/hardhat-toolbox": "^3.0.0",
