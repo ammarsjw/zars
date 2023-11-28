@@ -1,7 +1,7 @@
 const hre = require("hardhat")
 
 async function main() {
-    // Chain dependent variables
+    // Chain dependent variables.
     const networkName = hre.network.name
     let desiredGasPrice
     if (networkName == "goerli") {
@@ -11,34 +11,36 @@ async function main() {
     }
 
 
-    // Checking gas price
+    // Checking gas price.
     await checkGasPrice(desiredGasPrice)
     console.log("Chain:", networkName)
 
 
-    // Protocol and initialization addresses
+    // Protocol and initialization addresses.
     const zarsAddress = ""
     const airdropAddress = ""
     const presaleAddress = ""
     const stakingAddress = ""
 
 
-    // Contracts
-    // Initializing Airdrop
+    // Contracts.
+    // Initializing Airdrop.
     const airdropInstance = await hre.ethers.getContractAt("Airdrop", airdropAddress)
     await airdropInstance.initialize(zarsAddress, stakingAddress)
     console.log("Airdrop initialized")
-    // Initializing Presale
+
+    // Initializing Presale.
     const presaleInstance = await hre.ethers.getContractAt("Presale", presaleAddress)
     await presaleInstance.initialize(zarsAddress, stakingAddress)
     console.log("Presale initialized")
-    // Initializing Staking
+
+    // Initializing Staking.
     const stakingInstance = await hre.ethers.getContractAt("Staking", stakingAddress)
     await stakingInstance.initialize(zarsAddress, airdropAddress, presaleAddress)
     console.log("Staking initialized")
 
 
-    // Chain based secondary transactions
+    // Chain based secondary transactions.
     if (networkName == "goerli") {    
         const [, saleWallet, stakingRewardWallet] = await hre.ethers.getSigners()
         const zarsInstance = await hre.ethers.getContractAt("Zars", zarsAddress)
@@ -50,6 +52,7 @@ async function main() {
         console.log("Sale wallet's allowance granted to Presale")
         await zarsInstance.connect(stakingRewardWallet).approve(stakingAddress, uintMax)
         console.log("staking reward wallet's allowance granted to Staking")
+    } else if (networkName == "bsc") {
     }
 
 

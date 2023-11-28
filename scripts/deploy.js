@@ -2,7 +2,7 @@ const hre = require("hardhat")
 
 
 async function main() {
-    // Chain dependent variables
+    // Chain dependent variables.
     const networkName = hre.network.name
     let desiredGasPrice, saleWalletAddress, stakingRewardWalletAddress
     let feeCollectorAddresses = []
@@ -29,17 +29,17 @@ async function main() {
     }
 
 
-    // Checking gas price
+    // Checking gas price.
     await checkGasPrice(desiredGasPrice)
     console.log("Chain:", networkName)
 
 
-    // Static constructor arguments
+    // Static constructor arguments.
     const name = "Zars", symbol = "ZRS", decimals = "9"
 
 
-    // Contracts
-    // Deploying Zars
+    // Contracts.
+    // Deploying Zars.
     const zarsContract = await hre.ethers.deployContract(
         "Zars",
         [name, symbol, decimals, feeCollectorAddresses, saleWalletAddress, stakingRewardWalletAddress]
@@ -50,7 +50,7 @@ async function main() {
     console.log("Zars deployed to:", zarsContract.target)
     console.log("at block number:", zarsDeployTx.blockNumber)
 
-    // Deploying Airdrop
+    // Deploying Airdrop.
     const airdropContract = await hre.ethers.deployContract("Airdrop", [saleWalletAddress])
     await airdropContract.waitForDeployment()
     const airdropDeployTxHash = await airdropContract.deploymentTransaction().hash
@@ -58,7 +58,7 @@ async function main() {
     console.log("(Graph) Airdrop deployed to:", airdropContract.target)
     console.log("at block number:", airdropDeployTx.blockNumber)
 
-    // Deploying Presale
+    // Deploying Presale.
     const presaleContract = await hre.ethers.deployContract("Presale", [saleWalletAddress])
     await presaleContract.waitForDeployment()
     const presaleDeployTxHash = await presaleContract.deploymentTransaction().hash
@@ -66,7 +66,7 @@ async function main() {
     console.log("(Graph) Presale deployed to:", presaleContract.target)
     console.log("at block number:", presaleDeployTx.blockNumber)
 
-    // Deploying Staking
+    // Deploying Staking.
     const stakingContract = await hre.ethers.deployContract("Staking", [stakingRewardWalletAddress])
     await stakingContract.waitForDeployment()
     const stakingDeployTxHash = await stakingContract.deploymentTransaction().hash
@@ -75,7 +75,7 @@ async function main() {
     console.log("at block number:", stakingDeployTx.blockNumber)
 
 
-    // Addresses
+    // Addresses.
     const zarsAddress = zarsContract.target
     const airdropAddress = airdropContract.target
     const presaleAddress = presaleContract.target
@@ -86,7 +86,7 @@ async function main() {
     // const stakingAddress = ""
 
 
-    // Verifying contracts
+    // Verifying contracts.
     await new Promise(resolve => setTimeout(resolve, 20000))
     await verify(zarsAddress, [name, symbol, decimals, feeCollectorAddresses, saleWalletAddress, stakingRewardWalletAddress])
     await verify(airdropAddress, [saleWalletAddress])
