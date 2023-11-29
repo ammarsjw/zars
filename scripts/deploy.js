@@ -34,7 +34,7 @@ async function main() {
     console.log("Chain:", networkName)
 
 
-    // Static constructor arguments.
+    // Static variables.
     const name = "Zars", symbol = "ZRS", decimals = "9"
 
 
