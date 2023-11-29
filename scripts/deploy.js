@@ -4,28 +4,37 @@ const hre = require("hardhat")
 async function main() {
     // Chain dependent variables.
     const networkName = hre.network.name
-    let desiredGasPrice, saleWalletAddress, stakingRewardWalletAddress
+    let desiredGasPrice
+    let saleWalletAddress
+    let stakingRewardWalletAddress
     let feeCollectorAddresses = []
+
     if (networkName == "goerli") {
         desiredGasPrice = 1
+
+        saleWalletAddress = "0x49A61ba8E25FBd58cE9B30E1276c4Eb41dD80a80"
+
+        stakingRewardWalletAddress = "0x3edCe801a3f1851675e68589844B1b412EAc6B07"
+
         feeCollectorAddresses = [
             "0x0000000000000000000000000000000000000001",
             "0x0000000000000000000000000000000000000002",
             "0x0000000000000000000000000000000000000003",
             "0x0000000000000000000000000000000000000004"
         ]
-        saleWalletAddress = "0x49A61ba8E25FBd58cE9B30E1276c4Eb41dD80a80"
-        stakingRewardWalletAddress = "0x3edCe801a3f1851675e68589844B1b412EAc6B07"
     } else if (networkName == "bsc") {
         desiredGasPrice = 3
+
+        saleWalletAddress = ""
+
+        stakingRewardWalletAddress = ""
+
         feeCollectorAddresses = [
             "",
             "",
             "",
             ""
         ]
-        saleWalletAddress = ""
-        stakingRewardWalletAddress = ""
     }
 
 
@@ -39,17 +48,6 @@ async function main() {
 
 
     // Contracts.
-    // Deploying Zars.
-    const zarsContract = await hre.ethers.deployContract(
-        "Zars",
-        [name, symbol, decimals, feeCollectorAddresses, saleWalletAddress, stakingRewardWalletAddress]
-    )
-    await zarsContract.waitForDeployment()
-    const zarsDeployTxHash = await zarsContract.deploymentTransaction().hash
-    const zarsDeployTx = await hre.ethers.provider.getTransactionReceipt(zarsDeployTxHash)
-    console.log("Zars deployed to:", zarsContract.target)
-    console.log("at block number:", zarsDeployTx.blockNumber)
-
     // Deploying Airdrop.
     const airdropContract = await hre.ethers.deployContract("Airdrop", [saleWalletAddress])
     await airdropContract.waitForDeployment()
@@ -74,24 +72,35 @@ async function main() {
     console.log("(Graph) Staking deployed to:", stakingContract.target)
     console.log("at block number:", stakingDeployTx.blockNumber)
 
+    // Deploying Zars.
+    const zarsContract = await hre.ethers.deployContract(
+        "Zars",
+        [name, symbol, decimals, feeCollectorAddresses, saleWalletAddress, stakingRewardWalletAddress]
+    )
+    await zarsContract.waitForDeployment()
+    const zarsDeployTxHash = await zarsContract.deploymentTransaction().hash
+    const zarsDeployTx = await hre.ethers.provider.getTransactionReceipt(zarsDeployTxHash)
+    console.log("Zars deployed to:", zarsContract.target)
+    console.log("at block number:", zarsDeployTx.blockNumber)
+
 
     // Addresses.
-    const zarsAddress = zarsContract.target
     const airdropAddress = airdropContract.target
     const presaleAddress = presaleContract.target
     const stakingAddress = stakingContract.target
-    // const zarsAddress = ""
+    const zarsAddress = zarsContract.target
     // const airdropAddress = ""
     // const presaleAddress = ""
     // const stakingAddress = ""
+    // const zarsAddress = ""
 
 
     // Verifying contracts.
     await new Promise(resolve => setTimeout(resolve, 20000))
-    await verify(zarsAddress, [name, symbol, decimals, feeCollectorAddresses, saleWalletAddress, stakingRewardWalletAddress])
     await verify(airdropAddress, [saleWalletAddress])
     await verify(presaleAddress, [saleWalletAddress])
     await verify(stakingAddress, [stakingRewardWalletAddress])
+    await verify(zarsAddress, [name, symbol, decimals, feeCollectorAddresses, saleWalletAddress, stakingRewardWalletAddress])
 
 
     process.exit()
