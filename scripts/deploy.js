@@ -1,6 +1,5 @@
 const hre = require("hardhat")
 
-
 async function main() {
     // Chain dependent variables.
     const networkName = hre.network.name
@@ -106,7 +105,6 @@ async function main() {
     process.exit()
 }
 
-
 async function checkGasPrice(desiredGasPrice) {
     let feeData = await hre.ethers.provider.getFeeData()
     let gasPrice = hre.ethers.formatUnits(feeData.gasPrice, "gwei")
@@ -120,7 +118,6 @@ async function checkGasPrice(desiredGasPrice) {
     }
 }
 
-
 async function verify(address, constructorArguments) {
     console.log(`verify ${address} with arguments ${constructorArguments.join(",")}`)
     try {
@@ -130,7 +127,6 @@ async function verify(address, constructorArguments) {
         })
     } catch(error) { console.log(error) }
 }
-
 
 main().catch((error) => {
     console.error(error)
