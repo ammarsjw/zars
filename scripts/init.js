@@ -4,6 +4,7 @@ async function main() {
     // Chain dependent variables.
     const networkName = hre.network.name
     let desiredGasPrice
+
     if (networkName == "goerli") {
         desiredGasPrice = 1
     } else if (networkName == "bsc") {

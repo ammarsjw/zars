@@ -124,10 +124,7 @@ async function verify(address, constructorArguments) {
     console.log(`verify ${address} with arguments ${constructorArguments.join(",")}`)
 
     try {
-        await hre.run("verify:verify", {
-            address,
-            constructorArguments
-        })
+        await hre.run("verify:verify", {address, constructorArguments})
     } catch (error) { console.log(error) }
 }
 
